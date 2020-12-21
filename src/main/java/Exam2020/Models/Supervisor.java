@@ -16,7 +16,7 @@ public class Supervisor {
     @Column
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student") //Maps to owning side where student has FK
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supervisor") //Maps to owning side where student has FK
     private List<Student> student;
 
     /**

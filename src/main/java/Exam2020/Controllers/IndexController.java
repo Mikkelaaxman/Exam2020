@@ -12,7 +12,8 @@ public class IndexController {
 
     @GetMapping("/")
     public String index() {
-        return "index";
+        System.out.println("Index called");
+        return "/index";
     }
 
 }

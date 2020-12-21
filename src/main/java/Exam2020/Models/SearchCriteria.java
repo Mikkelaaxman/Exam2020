@@ -1,6 +1,6 @@
 package Exam2020.Models;
 
-// import org.hibernate.validator.constraints.NotBlank; Deprecated!
+// import org.hibernate.validator.constraints.NotBlank; Deprecated
 import javax.validation.constraints.NotEmpty;
 
 
