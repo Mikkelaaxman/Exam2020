@@ -1,17 +1,12 @@
 package Exam2020.JPA;
 
 import Exam2020.Models.Student;
-import Exam2020.Models.Supervisor;
 import Exam2020.Repos.StudentRepo;
-import Exam2020.Repos.SupervisorRepo;
 import Exam2020.Services.StudentService;
-import Exam2020.Services.SupervisorService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Could be called our StudentServiceImplementation, this is where the businesslogic happens.
@@ -72,6 +67,6 @@ public class StudentJPA implements StudentService {
 
     @Override
     public Optional<Student> findById(Long aLong) {
-        return Optional.empty();
+        return studentRepo.findById(aLong);
     }
 }

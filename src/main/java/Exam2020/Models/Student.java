@@ -1,5 +1,7 @@
 package Exam2020.Models;
 
+import net.bytebuddy.implementation.bind.annotation.Super;
+
 import javax.persistence.*;
 
 @Entity
@@ -36,8 +38,8 @@ public class Student {
     public Student(String name, String email) {
         this.name = name;
         this.email = email;
-
     }
+
 
     @Override
     public String toString() {

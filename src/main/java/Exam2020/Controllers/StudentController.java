@@ -1,8 +1,6 @@
 package Exam2020.Controllers;
 
-import Exam2020.Models.AjaxResponseBody;
-import Exam2020.Models.SearchCriteria;
-import Exam2020.Models.Student;
+import Exam2020.Models.*;
 import Exam2020.Services.StudentService;
 import Exam2020.Services.SupervisorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +62,7 @@ public class StudentController {
     }
 
     @PostMapping("/api/addStudent")
-    public ResponseEntity<?> addStudent(@Valid @RequestBody Student student, Errors errors) {
+    public ResponseEntity<?> addStudent(@Valid @RequestBody AddStudentResponse student, Errors errors) {
         System.out.println("Add Student Called " + student.getName() + student.getEmail());
 
         //If error, just return a 400 bad request, along with the error message
@@ -74,13 +72,17 @@ public class StudentController {
             return ResponseEntity.badRequest().body(result);
 
         }
+        Student newStud = new Student(student.getName(), student.getEmail());
+        newStud.setSupervisor(supervisorService.findById(student.getSupervisor()).get());
 
         List<Student> students = studentService.findAll();
 
-        students.add(student);
+        students.add(newStud);
 
-        if (students.isEmpty()) {
-            result.setMsg("no student found!");
+        studentService.save(newStud);
+
+        if (newStud.equals(null)) {
+            result.setMsg("no student added!");
         } else {
             result.setMsg("success");
         }

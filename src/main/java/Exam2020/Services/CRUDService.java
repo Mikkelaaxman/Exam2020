@@ -1,5 +1,7 @@
 package Exam2020.Services;
 
+import Exam2020.Models.Supervisor;
+
 import java.util.List;
 import java.util.Optional;
 
