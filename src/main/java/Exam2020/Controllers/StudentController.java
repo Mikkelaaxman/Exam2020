@@ -56,14 +56,21 @@ public class StudentController {
 
     @PostMapping("api/allStudents")
     public List<Student> getAllStudentsViaAjax(){
+        System.out.println("All students called");
         List<Student> students = studentService.findAll();
 
         return students;
     }
 
+    /**
+     *
+     * @param addStudentResponse Response object containing name, email and supervisor id
+     * @param errors
+     * @return
+     */
     @PostMapping("/api/addStudent")
-    public ResponseEntity<?> addStudent(@Valid @RequestBody AddStudentResponse student, Errors errors) {
-        System.out.println("Add Student Called " + student.getName() + student.getEmail());
+    public ResponseEntity<?> addStudent(@Valid @RequestBody AddStudentResponse addStudentResponse, Errors errors) {
+        System.out.println("Add Student Called " + addStudentResponse.getName() + addStudentResponse.getEmail());
 
         //If error, just return a 400 bad request, along with the error message
         if (errors.hasErrors()) {
@@ -72,20 +79,22 @@ public class StudentController {
             return ResponseEntity.badRequest().body(result);
 
         }
-        Student newStud = new Student(student.getName(), student.getEmail());
-        newStud.setSupervisor(supervisorService.findById(student.getSupervisor()).get());
+
+        Student newStud = new Student(addStudentResponse.getName(), addStudentResponse.getEmail());
+        newStud.setSupervisor(supervisorService.findById(addStudentResponse.getSupervisor()).get());
 
         List<Student> students = studentService.findAll();
 
         students.add(newStud);
 
-        studentService.save(newStud);
+        studentService.save(newStud);   //Saving to DB
 
-        if (newStud.equals(null)) {
+        if (studentService.findById(newStud.getId()).isEmpty()) {
             result.setMsg("no student added!");
         } else {
             result.setMsg("success");
         }
+        System.out.println("Number of Students: " + students.size());
         result.setResult(students);
 
         return ResponseEntity.ok(result);

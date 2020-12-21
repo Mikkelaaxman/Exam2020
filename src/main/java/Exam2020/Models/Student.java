@@ -1,5 +1,6 @@
 package Exam2020.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.bytebuddy.implementation.bind.annotation.Super;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class Student {
     /**
      * Many students for one supervisor
      */
+    @JsonIgnore //TODO Solve the infinite recursion happening here and remove annotation
     @ManyToOne
     @JoinColumn(name = "supervisor_id")//Defines the owning side by having a foreign key TODO WHY AM I GETTING ERROR!?
     private Supervisor supervisor;

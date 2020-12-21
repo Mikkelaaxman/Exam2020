@@ -20,7 +20,7 @@ public class SupervisorJPA implements SupervisorService {
         this.supervisorRepo = supervisorRepo;
     }
 
-/*  not needed.
+/*  not needed. DB seeded in mySQL workbench
     // Init some supervisors for testing
     @PostConstruct
     private void iniDataForTesting() {

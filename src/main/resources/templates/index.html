@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
-<body>
+<body >
 <div class="container" style="min-height: 500px">
 
     <div class="starter-template">
@@ -68,8 +68,9 @@
     </div>
     <div class="starter-template">
         <h1>All Students:</h1>
-
         <div id="allStudents"></div>
+
+        <div id="allStudentsAjax"></div>
 
     </div>
 
@@ -79,11 +80,15 @@
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!--Undskyld rodet her, script burde ligge i static.js, men det virker ikke. src burde være OK, men mit projekt startede uden static.js directory?-->
+<!--
 <script type="text/javascript" th:src="@{../static/main.js}"></script>
+-->
 
 <script type="text/javascript">
     $( document ).ready(function() {
         console.log( "document loaded" );
+        all_students();
+
     });
     $(document).ready(function () {
         checkJQuery();
@@ -92,19 +97,20 @@
             //stop submit the form, we will post it manually.
             event.preventDefault();
             console.log("search button clicked")
-            fire_ajax_submit();
+            search_student();
+
         });
 
         $("#add-form").submit(function (event){
 
             //stop submit the form, we will post it manually.
             event.preventDefault();
-            console.log("ADD button clicked")
-            add_user();
+            console.log("Add student button clicked")
+            add_student();
         })
     });
 
-    function fire_ajax_submit() {
+    function search_student() {
 
         var search = {}
         search["name"] = $("#name").val();
@@ -143,16 +149,12 @@
         });
 
     }
-    function add_user() {
+    function add_student() {
 
         var input = {}
         input["name"] = $("#stud-name").val();
         input["email"] = $("#stud-email").val();
         input["supervisor"] = $("#supervisor-id").val();
-
-/*
-        $("#btn-save").prop("disabled", true);
-*/
 
         $.ajax({
             type: "POST",
@@ -166,23 +168,42 @@
 
                 var json = "<h4>Ajax Response</h4><pre>"
                     + JSON.stringify(data, null, 4) + "</pre>";
-                $('#allStudents').html(json);
-
+                $('#allStudentsAjax').html(json);
+                all_students();
                 console.log("SUCCESS : ", data);
-                $("#btn-search").prop("disabled", false);
 
             },
             error: function (e) {
 
                 var json = "<h4>Ajax Response</h4><pre>"
                     + e.responseText + "</pre>";
-                $('#allStudents').html(json);
-
+                $('#allStudentsAjax').html(json);
                 console.log("ERROR : ", e);
                 $("#btn-search").prop("disabled", false);
 
             }
         });
+    }
+
+    function all_students(){
+        console.log("all Students called");
+        $.ajax({
+            url:"api/allStudents",
+            type:"POST",
+            contentType:"application/JSON",
+            success: function (data) {
+                $.each(data, function (index, value) {
+                    $("#allStudents").append("<h3> Student " +index+ ": " + value.name +" Email: "+ value.email + "</h3>")
+                })
+            },
+            error: function (e) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + e.responseText + "</pre>";
+                $('#allStudentsAjax').html(json);
+                console.log("ERROR : ", e);
+            }
+        })
     }
 
     function checkJQuery(){
