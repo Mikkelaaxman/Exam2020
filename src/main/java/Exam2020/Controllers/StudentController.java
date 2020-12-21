@@ -76,6 +76,7 @@ public class StudentController {
         }
 
         List<Student> students = studentService.findAll();
+
         students.add(student);
 
         if (students.isEmpty()) {

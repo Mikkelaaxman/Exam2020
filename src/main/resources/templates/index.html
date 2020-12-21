@@ -5,15 +5,14 @@
     <title>Programming Exam 2020</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <link rel="stylesheet" type="text/css"
-          href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container" style="min-height: 500px">
-    <div id="feedback">feedback</div>
 
     <div class="starter-template">
         <h1>Search Student:</h1>
+        <div id="feedback">feedback</div>
 
         <form class="form-horizontal" id="search-form">
             <div class="form-group form-group-lg">
@@ -74,10 +73,121 @@
     </div>
 
 </div>
+
 <script type="text/javascript"
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<script type="text/javascript" th:src="@{/static/main.js}"></script>
+<!--Undskyld rodet her, script burde ligge i static.js, men det virker ikke. src burde være OK, men mit projekt startede uden static.js directory?-->
+<script type="text/javascript" th:src="@{../static/main.js}"></script>
 
+<script type="text/javascript">
+    $( document ).ready(function() {
+        console.log( "document loaded" );
+    });
+    $(document).ready(function () {
+        checkJQuery();
+        $("#search-form").submit(function (event) {
+
+            //stop submit the form, we will post it manually.
+            event.preventDefault();
+            console.log("search button clicked")
+            fire_ajax_submit();
+        });
+
+        $("#add-form").submit(function (event){
+
+            //stop submit the form, we will post it manually.
+            event.preventDefault();
+            console.log("ADD button clicked")
+            add_user();
+        })
+    });
+
+    function fire_ajax_submit() {
+
+        var search = {}
+        search["name"] = $("#name").val();
+        //search["email"] = $("#email").val();
+
+        $("#btn-search").prop("disabled", true);
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/api/search",
+            data: JSON.stringify(search),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + JSON.stringify(data, null, 4) + "</pre>";
+                $('#feedback').html(json);
+
+                console.log("SUCCESS : ", data);
+                $("#btn-search").prop("disabled", false);
+
+            },
+            error: function (e) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + e.responseText + "</pre>";
+                $('#feedback').html(json);
+
+                console.log("ERROR : ", e);
+                $("#btn-search").prop("disabled", false);
+
+            }
+        });
+
+    }
+    function add_user() {
+
+        var input = {}
+        input["name"] = $("#stud-name").val();
+        input["email"] = $("#stud-email").val();
+        input["supervisor"] = $("#supervisor-id").val();
+
+        $("#btn-save").prop("disabled", true);
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/api/addStudent",
+            data: JSON.stringify(input),
+            dataType: 'json',
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + JSON.stringify(data, null, 4) + "</pre>";
+                $('#allStudents').html(json);
+
+                console.log("SUCCESS : ", data);
+                $("#btn-search").prop("disabled", false);
+
+            },
+            error: function (e) {
+
+                var json = "<h4>Ajax Response</h4><pre>"
+                    + e.responseText + "</pre>";
+                $('#allStudents').html(json);
+
+                console.log("ERROR : ", e);
+                $("#btn-search").prop("disabled", false);
+
+            }
+        });
+    }
+
+    function checkJQuery(){
+        if (typeof jQuery != undefined){
+            console.log("jQuery loaded")
+        }
+        else(console.log("jQuery NOT loaded"))
+    }
+</script>
 </body>
 </html>

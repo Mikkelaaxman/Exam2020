@@ -1,6 +1,6 @@
+/* THIS DOCUMENT CANT BE FOUND FOR SOME REASON?? Static.js missing ? had to make my own static directory
 $(document).ready(function () {
     checkJQuery();
-
     $("#search-form").submit(function (event) {
 
         //stop submit the form, we will post it manually.
@@ -17,12 +17,7 @@ $(document).ready(function () {
         add_user();
     })
 });
-function checkJQuery(){
-    if (typeof jQuery != undefined){
-        console.log("jQuery loaded")
-    }
-    else(console.log("jQuery NOT loaded"))
-}
+
 function fire_ajax_submit() {
 
     var search = {}
@@ -62,7 +57,7 @@ function fire_ajax_submit() {
     });
 
 }
-function add_user(name, email, supervisor) {
+function add_user() {
 
     var input = {}
     input["name"] = $("#stud-name").val();
@@ -83,7 +78,7 @@ function add_user(name, email, supervisor) {
 
             var json = "<h4>Ajax Response</h4><pre>"
                 + JSON.stringify(data, null, 4) + "</pre>";
-            $('#feedback').html(json);
+            $('#allStudents').html(json);
 
             console.log("SUCCESS : ", data);
             $("#btn-search").prop("disabled", false);
@@ -93,12 +88,12 @@ function add_user(name, email, supervisor) {
 
             var json = "<h4>Ajax Response</h4><pre>"
                 + e.responseText + "</pre>";
-            $('#feedback').html(json);
+            $('#allStudents').html(json);
 
             console.log("ERROR : ", e);
             $("#btn-search").prop("disabled", false);
 
         }
     });
-
 }
+*/

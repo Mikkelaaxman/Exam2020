@@ -19,7 +19,7 @@ public class Student {
      * Many students for one supervisor
      */
     @ManyToOne
-    @JoinColumn(name = "supervisor_id") //Defines the owning side by having a foreign key
+    @JoinColumn(name = "supervisor_id")//Defines the owning side by having a foreign key TODO WHY AM I GETTING ERROR!?
     private Supervisor supervisor;
 
     /**
@@ -31,12 +31,12 @@ public class Student {
      * Constructor.
      * @param name
      * @param email
-     * @param supervisor
+
      */
-    public Student(String name, String email, Supervisor supervisor) {
+    public Student(String name, String email) {
         this.name = name;
         this.email = email;
-        this.supervisor = supervisor;
+
     }
 
     @Override

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-//Without @Table the default table name is Supervisor
+//Without @Table the default table name is supervisor
 public class Supervisor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Auto generated ID value
