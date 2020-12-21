@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public interface CRUDService<T, ID> {
     List<T> findAll();
+    List<T> findByName(String name);
     T save(T object);
     void delete(T object);
     void deleteById(ID id);

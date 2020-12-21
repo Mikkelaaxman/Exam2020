@@ -3,7 +3,9 @@ package Exam2020.JPA;
 import Exam2020.Models.Student;
 import Exam2020.Models.Supervisor;
 import Exam2020.Repos.StudentRepo;
+import Exam2020.Repos.SupervisorRepo;
 import Exam2020.Services.StudentService;
+import Exam2020.Services.SupervisorService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -24,22 +26,13 @@ public class StudentJPA implements StudentService {
         this.studentRepo = studentRepo;
     }
 
-    //Java 8 lambda art
-    @Override
-    public List<Student> findStudentByName(String name) {
-        List<Student> result = students.stream()
-                .filter(x -> x.getName().equalsIgnoreCase(name))
-                .collect(Collectors.toList());
-        return result;
-    }
-
     // Init some students for testing
     @PostConstruct
     private void iniDataForTesting() {
 
         students = new ArrayList<Student>();
-        Supervisor supervisor1 = new Supervisor("Jon", "Jone@kea.dk");  //TODO Find supervisor
-
+        Supervisor supervisor1 = new Supervisor("Test", "Test@kea.dk");  //TODO Find supervisor properly
+        supervisor1.setId((long)9999);  //Not proper way to do this. at least test for not null id
 
         Student student1 = new Student("Mikkel", "mikk990@kea.dk", supervisor1);
         Student student2 = new Student("Bob", "bob123@kea.dk", supervisor1);
@@ -52,6 +45,14 @@ public class StudentJPA implements StudentService {
     public List<Student> findAll() {
         List<Student> result = new ArrayList<>();
         studentRepo.findAll().forEach(result::add); //adds iterable to list
+        return result;
+    }
+
+    @Override
+    public List<Student> findByName(String name) {
+        List<Student> result = students.stream()
+                .filter(x -> x.getName().equalsIgnoreCase(name))
+                .collect(Collectors.toList());
         return result;
     }
 
